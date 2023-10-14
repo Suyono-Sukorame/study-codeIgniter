@@ -2,9 +2,22 @@
 
 	class Blog_model extends CI_Model {
 
+		// public function getBlogs()
+		// {
+		// 	$filter = $this->input->get('find');
+		// 	$this->db->like('title', $filter);
+		// 	return $this->db->get("blog");
+		// }
+
 		public function getBlogs()
 		{
-			return $this->db->get("blog");
+		    $filter = $this->input->get('find');
+
+		    // Menggunakan parameterized query untuk menghindari SQL injection
+		    $sql = "SELECT * FROM blog WHERE title LIKE ?";
+		    $query = $this->db->query($sql, array('%' . $filter . '%'));
+
+		    return $query;
 		}
 		public function getSingleBlog($field, $value)
 		{
