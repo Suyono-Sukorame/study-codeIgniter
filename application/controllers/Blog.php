@@ -6,6 +6,7 @@ class Blog extends CI_Controller
         parent::__construct();
         $this->load->database();
         $this->load->helper('url');
+        // $this->load->helper('form');
         $this->load->model('Blog_model');
     }
 
@@ -19,7 +20,7 @@ class Blog extends CI_Controller
 
     public function detail($url)
     {
-        $query = $this->Blog_model->getSingleBlog($url);
+        $query = $this->Blog_model->getSingleBlog('url', $url);
         $data['blog'] = $query->row_array();
 
         $this->load->view('detail', $data);
@@ -36,12 +37,14 @@ class Blog extends CI_Controller
 
             if ($id) {
                 echo "Data berhasil disimpan";
+                redirect('/');
             } else {
                 echo "Data gagal disimpan";
             }
         }
         $this->load->view('form_add');
     }
+        
     public function edit($id)
     {
         $query = $this->Blog_model->getSingleBlog('id', $id);
@@ -56,13 +59,15 @@ class Blog extends CI_Controller
 
             if ($id) {
                 echo "Data berhasil disimpan";
-            } else
+                redirect('/');                
+            } else {
                 echo "Data gagal disimpan";
             }
+        }
 
         $this->load->view('form_edit', $data);
-        
     }
+
     public function delete($id)
     {
         $this->Blog_model->deleteBlog($id);
